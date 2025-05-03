@@ -37,8 +37,6 @@ word = colored(f"""
 {by_drax.rjust(75)}
 """, 'red', attrs=['bold'])
 
-time.sleep(2)
-
 parser = argparse.ArgumentParser(prog='ssh-draxer',
 								 formatter_class=argparse.RawDescriptionHelpFormatter,
 								 conflict_handler='resolve',
@@ -188,21 +186,18 @@ def verboser_brute(host,username, password):
 				print("=================================================================")
 				print(f'Your Result Has Been Saved in -- {out_col} --'.rjust(10))
 				print("=================================================================")
-				ssh.close()
 				os._exit(os.EX_OK)
+				ssh.close()
 
 		else:
 
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
 				+ Fore.GREEN + f" {username}" + Fore.RESET)
-			time.sleep(2)
-
 			cprint(f"\nHELP: To Connect With Password Using ssh Command You Must Install 'passh' Or 'sshpass'\n\
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
-
-			ssh.close()
 			os._exit(os.EX_OK)
+			ssh.close()
 
 		ssh.close()
 
@@ -217,6 +212,7 @@ def verboser_brute(host,username, password):
 
 	except paramiko.ssh_exception.AuthenticationException:
 		print("[{}] Failed To Connect --> '{} : {}'".format(X, username, password))
+		ssh.close()
 
 	except paramiko.ssh_exception.SSHException:
 		pass
@@ -289,20 +285,19 @@ def noverboser_brute(host, username, password):
 				print("=================================================================")
 				print(f'Your Result Has Been Saved in -- {out_col} --'.rjust(10))
 				print("=================================================================")
-				ssh.close()
 				os._exit(os.EX_OK)
+				ssh.close()
 
 		else:
 
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
 				+ Fore.GREEN + f" {username}" + Fore.RESET)
-
 			cprint(f"\nHELP: To Connect With Password Using ssh Command You Must Install 'passh' Or 'sshpass'\n\
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
 
-			ssh.close()
 			os._exit(os.EX_OK)
+			ssh.close()
 
 		ssh.close()
 
@@ -316,7 +311,7 @@ def noverboser_brute(host, username, password):
 		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.AuthenticationException:
-		pass
+		ssh.close()
 
 	except paramiko.ssh_exception.SSHException:
 		pass
@@ -335,24 +330,20 @@ def check_os_ver():
 	if platform.system() == 'Linux':
 		os.system('clear')
 		print(word)
-		time.sleep(0.5)
 		ver_logs()
 	else:
 		os.system('cls')
 		print(word)
-		time.sleep(0.5)
 		ver_logs()
 
 def check_os_nover():
 	if platform.system() == 'Linux':
 		os.system('clear')
 		print(word)
-		time.sleep(0.5)
 		logs()
 	else:
 		os.system('cls')
 		print(word)
-		time.sleep(0.5)
 		logs()
 
 if __name__ == '__main__':
