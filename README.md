@@ -82,8 +82,3 @@ exemple: python3 ssh-bruteforcer.py --host 127.0.0.2 --username user --wordlist 
 
 That's It For Now And I Hope This Tool Makes Your Day Awesome, Remember With Great Power Comes Great Responsibility!
 ![gray0_ctp_on_line](https://github.com/user-attachments/assets/666442e5-7ae5-485d-9dff-2667aa8efb7e)
-    <path transform="matrix(1,0,0,1,92.3579,4.11772)" d="M110.074,10.347C113.617,10.347 114.448,14.635 117.14,14.635" style="fill: none; stroke: rgb(110, 108, 126); stroke-width: 1.5px;"/>
-    <path transform="matrix(1,0,0,1,92.3579,4.11772)" d="M112.568,9.074C112.568,9.074 111.553,6.74 110.677,6.74C109.801,6.74 108.537,9.169 108.537,9.169" style="fill: none; stroke: rgb(110, 108, 126); stroke-width: 1.5px;"/>
-    <path transform="matrix(3.96613,0,0,5.89452,-177.012,-336.835)" d="M93.717,66.428L195.647,66.428" style="fill: none; stroke: rgb(110, 108, 126); stroke-width: 0.3px;"/>
-    <path transform="matrix(1.78906,0,0,2.78204,-166.7,-130.078)" d="M93.717,66.428L195.647,66.428" style="fill: none; stroke: rgb(110, 108, 126); stroke-width: 0.64px;"/>
-</svg>ploading gray0_ctp_on_line.svg…]()
