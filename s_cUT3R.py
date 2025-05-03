@@ -183,9 +183,9 @@ def verboser_brute(host,username, password):
 				file.write("username: {}\npassword: {}\n".format(username, password))
 				file.close()
 				out_col = colored(f"{os.getcwd()}/{args.output}", 'white', attrs=['bold'])
-				print("=================================================================")
+				print("="*80)
 				print(f'Your Result Has Been Saved in -- {out_col} --'.rjust(10))
-				print("=================================================================")
+				print("="*80)
 				os._exit(os.EX_OK)
 				ssh.close()
 
@@ -282,9 +282,9 @@ def noverboser_brute(host, username, password):
 				file.write("username: {}\npassword: {}\n".format(username, password))
 				file.close()
 				out_col = colored(f"{os.getcwd()}/{args.output}", 'white', attrs=['bold'])
-				print("=================================================================")
+				print("="*80)
 				print(f'Your Result Has Been Saved in -- {out_col} --'.rjust(10))
-				print("=================================================================")
+				print("="*80)
 				os._exit(os.EX_OK)
 				ssh.close()
 
