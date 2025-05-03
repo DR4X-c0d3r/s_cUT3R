@@ -175,7 +175,7 @@ def verboser_brute(host,username, password):
 		ssh.connect(host, port=int(args.port), username=username, password=password)
 		stop_flag = 1
 		if args.output and args.output != 'output.txt':
-			print(f"[\n{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
+			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
 				+ Fore.GREEN + f" {username}" + Fore.RESET)
 
 			with open(args.output, 'a') as file:
@@ -333,6 +333,7 @@ def check_os_ver():
 		time.sleep(4)
 		os.system('clear')
 		print(word)
+		time.sleep(1)
 		ver_logs()
 	else:
 		os.system('cls')
@@ -340,6 +341,7 @@ def check_os_ver():
 		time.sleep(4)
 		os.system('cls')
 		print(word)
+		time.sleep(1)
 		ver_logs()
 
 def check_os_nover():
@@ -349,6 +351,7 @@ def check_os_nover():
 		time.sleep(4)
 		os.system('clear')
 		print(word)
+		time.sleep(1)
 		logs()
 	else:
 		os.system('cls')
@@ -356,6 +359,7 @@ def check_os_nover():
 		time.sleep(4)
 		os.system('cls')
 		print(word)
+		time.sleep(1)
 		logs()
 
 if __name__ == '__main__':
