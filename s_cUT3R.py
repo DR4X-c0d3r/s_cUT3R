@@ -104,7 +104,7 @@ class errors:
 		print("\t*** Don't Forget To Use -e To Avoid This Errors ***")
 
 	def unicode_big_error():
-		print(f"[{At}{At}{At}] This Unicode Error Is From You Don't Do Any Mistake Next Time!")
+		print(f"[{At}{At}{At}] This Unicode Error Is From You, Don't Do Any Mistake Next Time!")
 
 	def timeout_error():
 		print( f"[{T}] Check Your Connection or The Server !!")
