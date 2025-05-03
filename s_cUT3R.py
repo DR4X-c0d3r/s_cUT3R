@@ -4,9 +4,9 @@ from pwn import *
 
 from datetime import datetime
 
-import paramiko, argparse
+import paramiko, argparse, platform
 
-import threading, time, os
+import threading, time, os, sys
 
 from termcolor import cprint, colored
 
@@ -28,14 +28,14 @@ At = colored("!","yellow", attrs=['bold'])
 
 by_drax = colored("\x1B[3m by DR4X_ \x1B[0m", 'white')
 
-print(colored(f"""
+word = colored(f"""
    _____ _____  __  __  ______ __  __ ______ _____  ____   __
   / ___// ___/ / / / / / ____// / / //_  __/|__  / / __ \ / /
   \__ \ \__ \ / /_/ / / /    / / / /  / /    /_ < / /_/ // / 
  ___/ /___/ // __  / / /___ / /_/ /  / /   ___/ // _, _//_/  
 /____//____//_/ /_/  \____/ \____/  /_/   /____//_/ |_|(_)
 {by_drax.rjust(75)}
-""", 'red', attrs=['bold']))
+""", 'red', attrs=['bold'])
 
 time.sleep(2)
 
@@ -90,7 +90,11 @@ parser.add_argument('-T', '--threads', help='To Make Your Brute Force Faster Cho
 			metavar='')
 parser.add_argument('-e', '--unicode', help='To encode Your Wordlist With Your Unicodes', default='utf-8', metavar='')
 
-args = parser.parse_args()
+if len(sys.argv) == 2:
+	print(word)
+	args = parser.parse_args()
+else:
+	args = parser.parse_args()
 
 class errors:
 
@@ -213,8 +217,6 @@ def verboser_brute(host,username, password):
 
 	except paramiko.ssh_exception.AuthenticationException:
 		print("[{}] Failed To Connect --> '{} : {}'".format(X, username, password))
-		ssh.close()
-		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.SSHException:
 		pass
@@ -329,8 +331,32 @@ def ver_logs():
 def logs():
 	noverboser_brute(args.host, args.username, args.wordlist)
 
-if __name__ == '__main__':
-	if args.verbose:
+def check_os_ver():
+	if platform.system() == 'Linux':
+		os.system('clear')
+		print(word)
+		time.sleep(0.5)
 		ver_logs()
 	else:
+		os.system('cls')
+		print(word)
+		time.sleep(0.5)
+		ver_logs()
+
+def check_os_nover():
+	if platform.system() == 'Linux':
+		os.system('clear')
+		print(word)
+		time.sleep(0.5)
 		logs()
+	else:
+		os.system('cls')
+		print(word)
+		time.sleep(0.5)
+		logs()
+
+if __name__ == '__main__':
+	if args.verbose:
+		check_os_ver()
+	else:
+		check_os_nover()
