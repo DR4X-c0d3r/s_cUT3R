@@ -329,9 +329,15 @@ def logs():
 def check_os_ver():
 	if platform.system() == 'Linux':
 		os.system('clear')
+		print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+		time.sleep(4)
+		os.system('clear')
 		print(word)
 		ver_logs()
 	else:
+		os.system('cls')
+		print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+		time.sleep(4)
 		os.system('cls')
 		print(word)
 		ver_logs()
@@ -339,9 +345,15 @@ def check_os_ver():
 def check_os_nover():
 	if platform.system() == 'Linux':
 		os.system('clear')
+		print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+		time.sleep(4)
+		os.system('clear')
 		print(word)
 		logs()
 	else:
+		os.system('cls')
+		print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+		time.sleep(4)
 		os.system('cls')
 		print(word)
 		logs()
