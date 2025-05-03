@@ -1,0 +1,5 @@
+colorama==0.4.4
+paramiko==2.7.2
+pwntools==4.14.1
+pyfiglet==1.0.2
+termcolor==1.1.0
