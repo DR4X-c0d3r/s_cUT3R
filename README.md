@@ -1,4 +1,4 @@
-# <ins>***s_cUT3R***</ins>
+#                           ***s_cUT3R***
 **Before Using The Tool Please Check The Packages And Everything set Okay.**
 
 ![cooltext481768461506995](https://github.com/user-attachments/assets/a9713895-e486-4a73-b554-d5bfbbac247f)
@@ -39,6 +39,7 @@
 > **By Default Speed(5) 99% You Will Get The Best Result, But Sloooooower :<**
 
 **Please If Any Problem Happend Tell Me =>** https://discord.com/users/drax112
+
 That's It For Now And I Hope This Tool Makes Your Day Awesome, Remember With Great Power Comes Great Responsibility!
 
 ![gray0_ctp_on_line](https://github.com/user-attachments/assets/666442e5-7ae5-485d-9dff-2667aa8efb7e)
