@@ -4,7 +4,7 @@ from pwn import *
 
 from datetime import datetime
 
-import paramiko, argparse, pyfiglet
+import paramiko, argparse
 
 import threading, time, os
 
@@ -26,13 +26,16 @@ V = colored("V","green", attrs=['bold'])
 
 At = colored("!","yellow", attrs=['bold'])
 
-word = pyfiglet.figlet_format("SSH CUTER!", font='slant', justify='center')
+by_drax = colored("\x1B[3m by DR4X_ \x1B[0m", 'white')
 
-cprint(word, 'red', attrs=['bold'])
-
-by_drax = colored("\x1B[3m[ by DR4X_ ]\x1B[0m", 'white')
-
-print(by_drax.rjust(80))
+print(colored(f"""
+   _____ _____  __  __  ______ __  __ ______ _____  ____   __
+  / ___// ___/ / / / / / ____// / / //_  __/|__  / / __ \ / /
+  \__ \ \__ \ / /_/ / / /    / / / /  / /    /_ < / /_/ // / 
+ ___/ /___/ // __  / / /___ / /_/ /  / /   ___/ // _, _//_/  
+/____//____//_/ /_/  \____/ \____/  /_/   /____//_/ |_|(_)
+{by_drax.rjust(75)}
+""", 'red', attrs=['bold']))
 
 time.sleep(2)
 
@@ -104,7 +107,7 @@ class errors:
 		print("\t*** Don't Forget To Use -e To Avoid This Errors ***")
 
 	def unicode_big_error():
-		print(f"[{At}{At}{At}] This Unicode Error Is From You, Don't Do Any Mistake Next Time!")
+		print(f"[{At}{At}{At}] This Unicode Error Is From You Don't Do Any Mistake Next Time!")
 
 	def timeout_error():
 		print( f"[{T}] Check Your Connection or The Server !!")
@@ -210,6 +213,8 @@ def verboser_brute(host,username, password):
 
 	except paramiko.ssh_exception.AuthenticationException:
 		print("[{}] Failed To Connect --> '{} : {}'".format(X, username, password))
+		ssh.close()
+		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.SSHException:
 		pass
