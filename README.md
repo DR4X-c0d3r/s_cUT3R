@@ -1,49 +1,12 @@
 # <ins>***s_cUT3R***</ins>
 **Before Using The Tool Please Check The Packages And Everything set Okay.**
-usage: python3 ssh-bruteforcer.py --help
 
-       python3 ssh-bruteforcer.py -h [hostname] -u [username] -w [wordlist]
+   __________ __  __  ________  __________________ 
+  / ___/ ___// / / / / ____/ / / /_  __/ ____/ __ \
+  \__ \\__ \/ /_/ / / /   / / / / / / / __/ / /_/ /
+ ___/ /__/ / __  / / /___/ /_/ / / / / /___/ _, _/ 
+/____/____/_/ /_/  \____/\____/ /_/ /_____/_/ |_|  
 
-       python3 ssh-bruteforcer.py --host [hostname] --username [username] --wordlist [wordlist]
-
-     >> ssh brute forcer <<
-**--------------------------------**
- **For Educational Purposes only!**
-**--------------------------------**
-
-positional arguments:
-  Wordlist          By Default [/usr/share/wordlists/rockyou.txt] Make Sure For Path
-  Threads           Low Threads=High_Speed But It Will Affect Your Result. !!!
-  Unicodes          Make Sure About Your File Type Before Use -e !!!
-
-optional arguments:
-  --help            show this help message and exit
-  -h , --host       Target Hostname!
-  -u , --username   Target Username!
-  -w , --wordlist   Take A Good Wordlist Like Rockyou.txt(default)
-  -v, --verbose     Verbose For More Detail About Your Brute Force
-  -p , --port       To Connect With Different Port
-  -o , --output     To Save Your Result In Your File
-  -T , --threads    To Make Your Brute Force Faster Choose [0, 1, 2, 3, 4] One Degit!
-  -e , --unicode    To encode Your Wordlist With Your Unicodes
-
-exemple: python3 ssh-bruteforcer.py -h 127.0.0.1 -u user -w rockyou.txt
-exemple: python3 ssh-bruteforcer.py --host 127.0.0.2 --username user --wordlist rockyou.txt
-
-For Specific Port -p:
-exemple: python3 ssh-bruteforcer.py --host 127.0.0.2 --username user --wordlist rockyou.txt -p [port_number]
-
-For More Details -v:
-exemple: python3 ssh-bruteforcer.py --host 127.0.0.2 --username user --wordlist rockyou.txt -p 22 -v
-
-For Save Result -o:
-exemple: python3 ssh-bruteforcer.py --host 127.0.0.2 --username user --wordlist rockyou.txt -p 22 -v -o [filename]
-
-To Increase Speed -T:
-exemple: python3 ssh-bruteforcer.py --host 127.0.0.2 --username user --wordlist rockyou.txt -p 22 -v -o [filename] -T [One Digit]
-
-For Encoding Type -e:
-exemple: python3 ssh-bruteforcer.py --host 127.0.0.2 --username user --wordlist rockyou.txt -p 22 -v -e [Encoding Type]
 
 **INSTALLATION :**
 ```
