@@ -87,6 +87,7 @@ parser.add_argument('-T', '--threads', help='To Make Your Brute Force Faster Cho
 			choices=[0,1,2,3,4,5],
 			metavar='')
 parser.add_argument('-e', '--unicode', help='To encode Your Wordlist With Your Unicodes', default='utf-8', metavar='')
+parser.add_argument('-q', '--quiet', help='To Avoid The Noises', action='store_true')
 
 if len(sys.argv) == 2:
 	print(word)
@@ -370,7 +371,11 @@ def check_os_nover():
 		logs()
 
 if __name__ == '__main__':
-	if args.verbose:
+	if args.quiet and args.verbose:
+		ver_logs()
+	elif args.verbose:
 		check_os_ver()
+	elif args.quiet:
+		logs()
 	else:
 		check_os_nover()
