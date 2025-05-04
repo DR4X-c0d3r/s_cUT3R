@@ -8,7 +8,7 @@ from termcolor import cprint, colored
 
 from colorama import Fore
 
-import paramiko, argparse
+import paramiko, argparse, platform
 
 import threading, time, os, sys
 
@@ -124,7 +124,7 @@ class errors:
 		os._exit(os.EX_OK)
 
 	def connection_error():
-		print(f"[{C}] Connection Error...")
+		print(f"[{C}] Connection Error.....")
 
 def verboser(func):
 
@@ -190,7 +190,6 @@ def verboser_brute(host,username, password):
 		if args.output and args.output != 'output.txt':
 			end_time = time.time()
 			time_took = end_time - start_time
-			print(f"This Brute Took To Finish: {time_took:.5f}s")
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
 				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
 			with open(args.output, 'a') as file:
