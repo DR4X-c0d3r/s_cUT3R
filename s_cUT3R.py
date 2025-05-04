@@ -4,13 +4,13 @@ from pwn import *
 
 from datetime import datetime
 
-import paramiko, argparse
-
-import threading, time, os, sys
-
 from termcolor import cprint, colored
 
 from colorama import Fore
+
+import paramiko, argparse
+
+import threading, time, os, sys
 
 import colorama
 
@@ -18,13 +18,15 @@ stop_flag = 0
 
 attempts = 0
 
-T = colored("T","yellow", attrs=['bold'])
-
 X = colored("X","red", attrs=['bold'])
+
+T = colored("T","yellow", attrs=['bold'])
 
 V = colored("V","green", attrs=['bold'])
 
 At = colored("!","yellow", attrs=['bold'])
+
+C = colored("C", "blue", attrs=['bold'])
 
 by_drax = colored("\x1B[3m by DR4X_ \x1B[0m", 'white')
 
@@ -99,6 +101,7 @@ class errors:
 
 	def file_error():
 		print("[{}] File Doesn't Exist [{}]".format(At,At))
+		os._exit(os.EX_OK)
 
 	def keyboard_error():
 		stop_threads = True
@@ -108,13 +111,20 @@ class errors:
 	def unicode_error():
 		print(f"[{At}] You May Have A Little Problem With Unicodes, Please Check your encoding file type [{At}]")
 		print("\t*** Don't Forget To Use -e To Avoid This Errors ***")
+		os._exit(os.EX_OK)
 
 	def unicode_big_error():
-		print(f"[{At}{At}{At}] This Unicode Error Is From You Don't Do Any Mistake Next Time!")
+		print(f"[{At}{At}{At}] This Unicode Error Is From You, Don't Do Any Mistakes Next Time!")
+		os._exit(os.EX_OK)
 
 	def timeout_error():
-		print( f"[{T}] Check Your Connection or The Server !!")
-		print('===')
+		print('============')
+		print( f"[{T}] TimeouT: Check Your Connection or The Server !!")
+		print('============')
+		os._exit(os.EX_OK)
+
+	def connection_error():
+		print(f"[{C}] Connection Error...")
 
 def verboser(func):
 
@@ -155,6 +165,7 @@ def verboser(func):
 
 		except KeyboardInterrupt:
 			errors.keyboard_error()
+			ssh.close()
 
 		except UnicodeDecodeError:
 			errors.unicode_error()
@@ -207,12 +218,13 @@ def verboser_brute(host,username, password):
 		ssh.close()
 
 	except paramiko.ssh_exception.NoValidConnectionsError as e:	
-		print("\nSomeThing Is Wrong, Please Check Again!\n")
 		with open("log.txt", 'a') as logs:
 			logs.write(f"{e}\n")
 			logs.close()
 		out_log = colored(f"{os.getcwd()}/log.txt", 'yellow', attrs=['bold'])
 		print(f"Look Inside The Log File {out_log} To Understand The Error!!")
+		return	"\nSomeThing Is Wrong, Please Check Again!\n"
+		ssh.close()
 		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.AuthenticationException:
@@ -224,6 +236,10 @@ def verboser_brute(host,username, password):
 
 	except TimeoutError:
 		errors.timeout_error()
+		ssh.close()
+
+	except Exception:
+		errors.connection_error()
 
 def noverboser(func):
 
@@ -258,6 +274,7 @@ def noverboser(func):
 
 		except KeyboardInterrupt:
 			errors.keyboard_error()
+			ssh.close()
 
 		except UnicodeDecodeError:
 			errors.unicode_error()
@@ -310,22 +327,28 @@ def noverboser_brute(host, username, password):
 		ssh.close()
 
 	except paramiko.ssh_exception.NoValidConnectionsError as e:	
-		print("\nSomeThing Is Wrong, Please Check Again!\n")
 		with open("log.txt", 'a') as logs:
 			logs.write(f"{e}\n")
 			logs.close()
 		out_log = colored(f"{os.getcwd()}/log.txt", 'yellow', attrs=['bold'])
 		print(f"Look Inside The Log File {out_log} To Understand The Error!!")
+		return	"\nSomeThing Is Wrong, Please Check Again!\n"
+		ssh.close()
 		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.AuthenticationException:
 		ssh.close()
 
 	except paramiko.ssh_exception.SSHException:
+		ssh.close()
 		pass
 
 	except TimeoutError:
 		errors.timeout_error()
+		ssh.close()
+
+	except Exception:
+		errors.connection_error()
 
 def ver_logs():
 	print('[V]-'.ljust(19)+"Verbose Mode".rjust(13)+'-[V]'.rjust(19))
