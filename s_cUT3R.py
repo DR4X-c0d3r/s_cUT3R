@@ -120,7 +120,7 @@ def verboser(func):
 	def wrapper(host, username, password):
 
 		global attempts
-
+		global start_time
 		global stop_threads
 
 		x = "-".rjust(20, '-')
@@ -129,6 +129,7 @@ def verboser(func):
 		try:
 			
 			with open(password, "r", encoding=args.unicode, errors='replace') as wordlist:
+				start_time = time.time()
 				
 				for password in wordlist.readlines():
 					now = datetime.now()
@@ -175,9 +176,11 @@ def verboser_brute(host,username, password):
 		ssh.connect(host, port=int(args.port), username=username, password=password)
 		stop_flag = 1
 		if args.output and args.output != 'output.txt':
+			end_time = time.time()
+			time_took = end_time - start_time
+			print(f"This Brute Took To Finish: {time_took:.5f}s")
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET)
-
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
 			with open(args.output, 'a') as file:
 
 				file.write("username: {}\npassword: {}\n".format(username, password))
@@ -190,9 +193,10 @@ def verboser_brute(host,username, password):
 				ssh.close()
 
 		else:
-
+			end_time = time.time()
+			time_took = end_time - start_time
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET)
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
 			cprint(f"\nHELP: To Connect With Password Using ssh Command You Must Install 'passh' Or 'sshpass'\n\
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
@@ -225,12 +229,14 @@ def noverboser(func):
 	def wrapper(host, username, password):
 
 		global attempts
+		global start_time
 		global stop_threads
 
 		print("You Are Not Using -v(verbose) So You Can Only See Me! But EveryThing is Good :)")
 
 		try:
 			
+			start_time = time.time()
 			with open(password, "r", encoding=args.unicode, errors='replace') as wordlist:
 				
 				for password in wordlist:
@@ -273,10 +279,10 @@ def noverboser_brute(host, username, password):
 		ssh.connect(host, int(args.port),username, password)
 		stop_flag = 1
 		if args.output and args.output != 'output.txt':
-
+			end_time = time.time()
+			time_took = end_time - start_time
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET)
-
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
 			with open(args.output, 'a') as file:
 
 				file.write("username: {}\npassword: {}\n".format(username, password))
@@ -289,9 +295,10 @@ def noverboser_brute(host, username, password):
 				ssh.close()
 
 		else:
-
+			end_time = time.time()
+			time_took = end_time - start_time
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET)
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
 			cprint(f"\nHELP: To Connect With Password Using ssh Command You Must Install 'passh' Or 'sshpass'\n\
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
