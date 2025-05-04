@@ -4,7 +4,7 @@ from pwn import *
 
 from datetime import datetime
 
-import paramiko, argparse, platform
+import paramiko, argparse
 
 import threading, time, os, sys
 
