@@ -347,7 +347,7 @@ def noverboser_brute(host, username, password):
 		ssh.close()
 
 	except Exception:
-		errors.connection_error()
+		pass
 
 def ver_logs():
 	print('[V]-'.ljust(19)+"Verbose Mode".rjust(13)+'-[V]'.rjust(19))
