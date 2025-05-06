@@ -27,13 +27,15 @@ attempts = 0
 
 X = colored("X","red", attrs=['bold'])
 
+INF = colored("INF", "blue")
+
 T = colored("T","yellow", attrs=['bold'])
 
 V = colored("V","green", attrs=['bold'])
 
 At = colored("!","yellow", attrs=['bold'])
 
-C = colored("C", "blue", attrs=['bold'])
+C = colored("C", "magenta")
 
 by_drax = colored("\x1B[3m by DR4X_ \x1B[0m", 'white')
 
@@ -160,7 +162,7 @@ def verboser(func):
 						os._exit(os.EX_OK)
 
 					password = password.strip()
-					print("[{}]-[{}] Attempting Time To Connect --> '{} : {}'".format(current_date, attempts, username, password))
+					print("[{}] {} [{}] Attempting Time To Connect --> '{} : {}'".format(INF,current_date, attempts, username, password))
 					stop_threads = False
 					if args.threads == 0:
 						t = threading.Thread(target=func, args=(host,username,password))
@@ -203,9 +205,9 @@ def verboser_brute(host,username, password):
 		if args.output and args.output != 'output.txt':
 			end_time = time.time()
 			time_took = end_time - start_time
-			time_blink = colored(f"{time_took:.5f}s", 'white', attrs=['fast_blink'])
+			time_blink = colored(f"{time_took:.3f}s", 'white')
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_blink}")
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken=> {time_blink}")
 			with open(args.output, 'a') as file:
 				now = datetime.now()
 				current_date = now.strftime("%d-%B-%Y, %H-%M-%S")
@@ -221,9 +223,9 @@ def verboser_brute(host,username, password):
 		else:
 			end_time = time.time()
 			time_took = end_time - start_time
-			time_blink = colored(f"{time_took:.5f}s", 'white', attrs=['blink'])
+			time_blink = colored(f"{time_took:.3f}s", 'white')
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_blink}")
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken=> {time_blink}")
 			cprint(f"\nHELP: To Connect With Password Using ssh Command You Must Install 'passh' Or 'sshpass'\n\
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
@@ -320,9 +322,9 @@ def noverboser_brute(host, username, password):
 		if args.output and args.output != 'output.txt':
 			end_time = time.time()
 			time_took = end_time - start_time
-			time_blink = colored(f"{time_took:.5f}s", 'white', attrs=['blink'])
+			time_blink = colored(f"{time_took:.3f}s", 'white')
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_blink}")
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken=> {time_blink}")
 			with open(args.output, 'a') as file:
 
 				file.write("username: {}\npassword: {}\n".format(username, password))
@@ -337,9 +339,9 @@ def noverboser_brute(host, username, password):
 		else:
 			end_time = time.time()
 			time_took = end_time - start_time
-			time_blink = colored(f"{time_took:.5f}s", 'white', attrs=['blink'])
+			time_blink = colored(f"{time_took:.3f}s", 'white')
 			print(f"\n[{V}] Password Found ==>" + Fore.GREEN + f" {password} " + Fore.RESET + ", For This User ==>" \
-				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken {time_blink}")
+				+ Fore.GREEN + f" {username}" + Fore.RESET + f", Have Taken=> {time_blink}")
 			cprint(f"\nHELP: To Connect With Password Using ssh Command You Must Install 'passh' Or 'sshpass'\n\
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
@@ -354,8 +356,8 @@ def noverboser_brute(host, username, password):
 			logs.write(f"{e}\n")
 			logs.close()
 		out_log = colored(f"{os.getcwd()}/log.txt", 'yellow', attrs=['bold'])
-		print(f"Look Inside The Log File {out_log} To Understand The Error!!")
 		print("\nSomeThing Is Wrong, Please Check Again!\n")
+		print(f"Look Inside The Log File {out_log} To Understand The Error!!")
 		ssh.close()
 		os._exit(os.EX_OK)
 
@@ -381,11 +383,17 @@ def ver_logs():
 def logs():
 	noverboser_brute(args.host, args.username, args.wordlist)
 
+def cool_killed():
+	print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+
+def cool_show():
+	print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+
 def check_os_ver():
 	if platform.system() == 'Linux':
 		try:
 			os.system('clear')
-			print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+			cool_show()
 			time.sleep(4)
 			os.system('clear')
 			print(word)
@@ -393,13 +401,13 @@ def check_os_ver():
 			ver_logs()
 
 		except KeyboardInterrupt:
-			print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+			cool_killed()
 			time.sleep(0.5)
 			os._exit(os.EX_OK)
 	else:
 		try:
 			os.system('cls')
-			print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+			cool_show()
 			time.sleep(4)
 			os.system('cls')
 			print(word)
@@ -407,15 +415,16 @@ def check_os_ver():
 			ver_logs()
 
 		except KeyboardInterrupt:
-			print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+			cool_killed()
 			time.sleep(0.5)
 			os._exit(os.EX_OK)
+
 
 def check_os_nover():
 	if platform.system() == 'Linux':
 		try:
 			os.system('clear')
-			print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+			cool_show()
 			time.sleep(4)
 			os.system('clear')
 			print(word)
@@ -423,13 +432,13 @@ def check_os_nover():
 			logs()
 
 		except KeyboardInterrupt:
-			print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+			cool_killed()
 			time.sleep(0.5)
 			os._exit(os.EX_OK)
 	else:
 		try:
 			os.system('cls')
-			print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
+			cool_show()
 			time.sleep(4)
 			os.system('cls')
 			print(word)
@@ -437,7 +446,7 @@ def check_os_nover():
 			logs()
 
 		except KeyboardInterrupt:
-			print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
+			cool_killed()
 			time.sleep(0.5)
 			os._exit(os.EX_OK)
 
