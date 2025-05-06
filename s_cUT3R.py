@@ -8,9 +8,7 @@ from termcolor import cprint, colored
 
 from colorama import Fore
 
-import paramiko, argparse, platform
-
-import threading, time, os, sys
+import paramiko, argparse, threading, time, os, sys
 
 import colorama
 
@@ -141,7 +139,6 @@ def verboser(func):
 
 		global attempts
 		global start_time
-		global stop_threads
 
 		x = "-".rjust(20, '-')
 		print(x, 'Processing'.ljust(30,'-'))
@@ -163,7 +160,6 @@ def verboser(func):
 
 					password = password.strip()
 					print("[{}] {} [{}] Attempting Time To Connect --> '{} : {}'".format(INF,current_date, attempts, username, password))
-					stop_threads = False
 					if args.threads == 0:
 						t = threading.Thread(target=func, args=(host,username,password))
 						t.start()
@@ -262,7 +258,6 @@ def noverboser(func):
 
 		global attempts
 		global start_time
-		global stop_threads
 
 		print("You Are Not Using -v(verbose) So You Can Only See Me! But EveryThing is Good :)")
 
@@ -278,7 +273,6 @@ def noverboser(func):
 						t.join()
 						os._exit(os.EX_OK)
 					password = password.strip()
-					stop_threads = False
 					if args.threads == '0':
 						t = threading.Thread(target=func, args=(host,username,password))
 						t.start()
@@ -357,6 +351,7 @@ def noverboser_brute(host, username, password):
 		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.AuthenticationException:
+		pass
 		attempts += 1
 
 	except paramiko.ssh_exception.SSHException:
@@ -389,8 +384,8 @@ class Logs:
 class Checker:
 
 	def check_os_ver():
-		if platform.system() == 'Linux':
-			try:
+		try:
+			if sys.platform == 'linux':
 				os.system('clear')
 				cool_show()
 				time.sleep(4)
@@ -398,13 +393,7 @@ class Checker:
 				print(word)
 				time.sleep(1)
 				Logs.ver_logs()
-
-			except KeyboardInterrupt:
-				cool_killed()
-				time.sleep(0.5)
-				os._exit(os.EX_OK)
-		else:
-			try:
+			else:
 				os.system('cls')
 				cool_show()
 				time.sleep(4)
@@ -413,15 +402,14 @@ class Checker:
 				time.sleep(1)
 				Logs.ver_logs()
 
-			except KeyboardInterrupt:
-				cool_killed()
-				time.sleep(0.5)
-				os._exit(os.EX_OK)
-
+		except KeyboardInterrupt:
+			cool_killed()
+			time.sleep(0.5)
+			os._exit(os.EX_OK)
 
 	def check_os_nover():
-		if platform.system() == 'Linux':
-			try:
+		try:
+			if sys.platform == 'linux':
 				os.system('clear')
 				cool_show()
 				time.sleep(4)
@@ -429,13 +417,7 @@ class Checker:
 				print(word)
 				time.sleep(1)
 				Logs.logs()
-
-			except KeyboardInterrupt:
-				cool_killed()
-				time.sleep(0.5)
-				os._exit(os.EX_OK)
-		else:
-			try:
+			else:
 				os.system('cls')
 				cool_show()
 				time.sleep(4)
@@ -444,10 +426,10 @@ class Checker:
 				time.sleep(1)
 				Logs.logs()
 
-			except KeyboardInterrupt:
-				cool_killed()
-				time.sleep(0.5)
-				os._exit(os.EX_OK)
+		except KeyboardInterrupt:
+			cool_killed()
+			time.sleep(0.5)
+			os._exit(os.EX_OK)
 
 if __name__ == '__main__':
 	if args.quiet and args.verbose:
