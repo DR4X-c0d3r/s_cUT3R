@@ -376,86 +376,91 @@ def noverboser_brute(host, username, password):
 	except Exception:
 		pass
 
-def ver_logs():
-	print('[V]-'.ljust(19)+"Verbose Mode".rjust(13)+'-[V]'.rjust(19))
-	verboser_brute(args.host, args.username, args.wordlist)
-
-def logs():
-	noverboser_brute(args.host, args.username, args.wordlist)
-
 def cool_killed():
 	print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
 
 def cool_show():
 	print("Listen! Good Processer, Good And Fast Result, No Illegal Things! Enjoy ;)")
 
-def check_os_ver():
-	if platform.system() == 'Linux':
-		try:
-			os.system('clear')
-			cool_show()
-			time.sleep(4)
-			os.system('clear')
-			print(word)
-			time.sleep(1)
-			ver_logs()
+class Logs:
 
-		except KeyboardInterrupt:
-			cool_killed()
-			time.sleep(0.5)
-			os._exit(os.EX_OK)
-	else:
-		try:
-			os.system('cls')
-			cool_show()
-			time.sleep(4)
-			os.system('cls')
-			print(word)
-			time.sleep(1)
-			ver_logs()
+	def ver_logs():
+		print('[V]-'.ljust(19)+"Verbose Mode".rjust(13)+'-[V]'.rjust(19))
+		verboser_brute(args.host, args.username, args.wordlist)
 
-		except KeyboardInterrupt:
-			cool_killed()
-			time.sleep(0.5)
-			os._exit(os.EX_OK)
+	def logs():
+		noverboser_brute(args.host, args.username, args.wordlist)
 
 
-def check_os_nover():
-	if platform.system() == 'Linux':
-		try:
-			os.system('clear')
-			cool_show()
-			time.sleep(4)
-			os.system('clear')
-			print(word)
-			time.sleep(1)
-			logs()
+class Checker:
 
-		except KeyboardInterrupt:
-			cool_killed()
-			time.sleep(0.5)
-			os._exit(os.EX_OK)
-	else:
-		try:
-			os.system('cls')
-			cool_show()
-			time.sleep(4)
-			os.system('cls')
-			print(word)
-			time.sleep(1)
-			logs()
+	def check_os_ver():
+		if platform.system() == 'Linux':
+			try:
+				os.system('clear')
+				cool_show()
+				time.sleep(4)
+				os.system('clear')
+				print(word)
+				time.sleep(1)
+				Logs.ver_logs()
 
-		except KeyboardInterrupt:
-			cool_killed()
-			time.sleep(0.5)
-			os._exit(os.EX_OK)
+			except KeyboardInterrupt:
+				cool_killed()
+				time.sleep(0.5)
+				os._exit(os.EX_OK)
+		else:
+			try:
+				os.system('cls')
+				cool_show()
+				time.sleep(4)
+				os.system('cls')
+				print(word)
+				time.sleep(1)
+				Logs.ver_logs()
+
+			except KeyboardInterrupt:
+				cool_killed()
+				time.sleep(0.5)
+				os._exit(os.EX_OK)
+
+
+	def check_os_nover():
+		if platform.system() == 'Linux':
+			try:
+				os.system('clear')
+				cool_show()
+				time.sleep(4)
+				os.system('clear')
+				print(word)
+				time.sleep(1)
+				Logs.logs()
+
+			except KeyboardInterrupt:
+				cool_killed()
+				time.sleep(0.5)
+				os._exit(os.EX_OK)
+		else:
+			try:
+				os.system('cls')
+				cool_show()
+				time.sleep(4)
+				os.system('cls')
+				print(word)
+				time.sleep(1)
+				Logs.logs()
+
+			except KeyboardInterrupt:
+				cool_killed()
+				time.sleep(0.5)
+				os._exit(os.EX_OK)
 
 if __name__ == '__main__':
 	if args.quiet and args.verbose:
-		ver_logs()
+		Logs.ver_logs()
 	elif args.verbose:
-		check_os_ver()
+		Checker.check_os_ver()
 	elif args.quiet:
-		logs()
+		Logs.logs()
 	else:
-		check_os_nover()
+		Checker.check_os_nover()
