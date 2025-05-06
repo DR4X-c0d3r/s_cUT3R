@@ -168,19 +168,18 @@ def verboser(func):
 						t = threading.Thread(target=func, args=(host,username,password))
 						t.start()
 						time.sleep(0.1)
+						attempts += 1
 					else:	
 						t = threading.Thread(target=func, args=(host,username,password))
 						t.start()
 						time.sleep(args.threads)
 						attempts += 1
-			print("Sorry But I Didn't Find AnyThing")
 
 		except FileNotFoundError:
 			errors.file_error()
 
 		except KeyboardInterrupt:
 			errors.keyboard_error()
-			ssh.close()
 
 		except UnicodeDecodeError:
 			errors.unicode_error()
@@ -194,6 +193,9 @@ def verboser(func):
 def verboser_brute(host,username, password):
 	global attempts
 	global stop_flag
+
+	now = datetime.now()
+	current_date = now.strftime("%d-%B-%Y, %H-%M-%S")
 
 	ssh = paramiko.SSHClient()
 	ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -218,7 +220,6 @@ def verboser_brute(host,username, password):
 				print(f'Your Result Has Been Saved in -- {out_col} --'.rjust(10))
 				print("="*80)
 				os._exit(os.EX_OK)
-				ssh.close()
 
 		else:
 			end_time = time.time()
@@ -230,23 +231,18 @@ def verboser_brute(host,username, password):
 				 \nTo Install One Of Them: # sudo apt install sshpass\n\
 			# sshpass -p {password} ssh {username}@{host}", 'white')
 			os._exit(os.EX_OK)
-			ssh.close()
-
-		ssh.close()
 
 	except paramiko.ssh_exception.NoValidConnectionsError as e:	
 		with open("log.txt", 'a') as logs:
-			logs.write(f"{e}\n")
+			logs.write(f"\n{current_date}\n{e}\n")
 			logs.close()
-		print("\nSomeThing Is Wrong, Please Check Again!\n")
+		print("\n[*] SomeThing Is Wrong, Please Check Again!\n")
 		out_log = colored(f"{os.getcwd()}/log.txt", 'yellow', attrs=['bold'])
-		print(f"Look Inside The Log File {out_log} To Understand The Error!!")
-		ssh.close()
+		print(f"[{INF}] Look Inside The Log File {out_log} To Understand The Error!!")
 		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.AuthenticationException:
 		print("[{}] Failed To Connect --> '{} : {}'".format(X, username, password))
-		ssh.close()
 		attempts += 1
 
 	except paramiko.ssh_exception.SSHException:
@@ -254,10 +250,11 @@ def verboser_brute(host,username, password):
 
 	except TimeoutError:
 		errors.timeout_error()
-		ssh.close()
 
 	except Exception:
 		errors.connection_error()
+
+	ssh.close()
 
 def noverboser(func):
 
@@ -286,6 +283,7 @@ def noverboser(func):
 						t = threading.Thread(target=func, args=(host,username,password))
 						t.start()
 						time.sleep(0.1)
+						attempts += 1
 					else:	
 						t = threading.Thread(target=func, args=(host,username,password))
 						t.start()
@@ -297,7 +295,6 @@ def noverboser(func):
 
 		except KeyboardInterrupt:
 			errors.keyboard_error()
-			ssh.close()
 
 		except UnicodeDecodeError:
 			errors.unicode_error()
@@ -311,6 +308,9 @@ def noverboser(func):
 def noverboser_brute(host, username, password):
 	global attempts
 	global stop_flag
+
+	now = datetime.now()
+	current_date = now.strftime("%d-%B-%Y, %H-%M-%S")
 
 	ssh = paramiko.SSHClient()
 	ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -334,7 +334,6 @@ def noverboser_brute(host, username, password):
 				print(f'Your Result Has Been Saved in -- {out_col} --'.rjust(10))
 				print("="*80)
 				os._exit(os.EX_OK)
-				ssh.close()
 
 		else:
 			end_time = time.time()
@@ -347,34 +346,29 @@ def noverboser_brute(host, username, password):
 			# sshpass -p {password} ssh {username}@{host}", 'white')
 
 			os._exit(os.EX_OK)
-			ssh.close()
-
-		ssh.close()
 
 	except paramiko.ssh_exception.NoValidConnectionsError as e:	
 		with open("log.txt", 'a') as logs:
-			logs.write(f"{e}\n")
+			logs.write(f"\n{current_date}\n{e}\n")
 			logs.close()
 		out_log = colored(f"{os.getcwd()}/log.txt", 'yellow', attrs=['bold'])
-		print("\nSomeThing Is Wrong, Please Check Again!\n")
-		print(f"Look Inside The Log File {out_log} To Understand The Error!!")
-		ssh.close()
+		print("\n[*] SomeThing Is Wrong, Please Check Again!\n")
+		print(f"[{INF}] Look Inside The Log File {out_log} To Understand The Error!!")
 		os._exit(os.EX_OK)
 
 	except paramiko.ssh_exception.AuthenticationException:
-		ssh.close()
 		attempts += 1
 
 	except paramiko.ssh_exception.SSHException:
-		ssh.close()
 		pass
 
 	except TimeoutError:
 		errors.timeout_error()
-		ssh.close()
 
 	except Exception:
 		pass
+
+	ssh.close()
 
 def cool_killed():
 	print("\nI Want To Be Cool And You Killed Me :( , Next Time Use -q To Make Me Sillence.")
