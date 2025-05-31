@@ -38,7 +38,7 @@
 ![fifth_pic](https://github.com/user-attachments/assets/fcdc607f-27a6-4b74-82d8-5ea4e3c5c88e)
 > **By Default Speed(5) 99% You Will Get The Best Result, But Sloooooower :<**
 
-**Please If Any Problem Happend Tell Me In The Server Channel =>** [https://discord.gg/Hunt3rs](https://discord.gg/uGmCz6XR)
+**Please If Any Problem Happend Tell Me In The Server Channel =>** [https://discord.gg/Hunt3rs](https://discord.gg/Cw6YZgqGzS)
 
 That's It For Now And I Hope This Tool Makes Your Day Awesome, Remember With Great Power Comes Great Responsibility!
 
